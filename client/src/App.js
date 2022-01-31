@@ -1,21 +1,21 @@
 import './App.css';
+import React, { useEffect, useState } from 'react'
+import axios from 'axios'
+const App = () => {
+  const [dat, setDat] = useState()
 
-function App() {
+  useEffect(() => {
+    axios.get('http://localhost:8000/data')
+      .then(res => setDat(res.data))
+      .catch(res => console.log(res))
+  }, [])
+
   return (
     <div className="App">
-      <header className="App-header">
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <p>
+        Chess Bot<br/>
+        {dat}
+      </p>
     </div>
   );
 }
