@@ -13,9 +13,62 @@ const Board = () => {
     var numarr = [8, 7, 6, 5, 4, 3, 2, 1]
     var alpharr = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h']
 
+    const isFree = (id) => {
+        if (Object.values(piecepos).includes(id))
+            return false
+        else
+            return true
+    }
+
+    const wKing = () => {
+
+    }
+    const wQueen = () => {
+
+    }
+    const wRook = () => {
+
+    }
+    const wBishop = () => {
+
+    }
+    const wKnight = () => {
+
+    }
+    const wPawn = (id) => {
+        var yinit = parseInt(id[1])
+        if (yinit == 2) {
+            if (isFree(id[0] + (yinit + 1))) {
+                document.getElementById(id[0] + (yinit + 1)).className = "board-square cls-p"
+                if (isFree(id[0] + (yinit + 2)))
+                    document.getElementById(id[0] + (yinit + 2)).className = "board-square cls-p"
+            }
+        }
+        else if (yinit > 2 && yinit < 8 && isFree(id[0] + (yinit + 1)))
+            document.getElementById(id[0] + (yinit + 1)).className = "board-square cls-p"
+        document.getElementById(id).className = "board-square cls"
+    }
+
     axios.get('/pieces')
         .then(res => setPieces(res.data))
         .catch(res => console.log(res))
+
+    const showMoves = (id) => {
+        var key = Object.keys(piecepos).find(k => piecepos[k] === id)
+        if (key[0] == key[0].toUpperCase()) {
+            switch (key[0]) {
+                case 'K': wKing(id); break;
+                case 'Q': wQueen(id); break;
+                case 'R': wRook(id); break;
+                case 'B': wBishop(id); break;
+                case 'N': wKnight(id); break;
+                case 'P': wPawn(id); break;
+            }
+        }
+        else {
+            ;
+        }
+    }
 
     const movePiece = (id) => {
         if (selpiece) {
@@ -29,15 +82,31 @@ const Board = () => {
             }
             else {
                 var key1 = Object.keys(piecepos).find(k => piecepos[k] === id)
-                var temp = piecepos
-                temp[key1] = ""
-                temp[key] = id
-                setpiecepos(temp)
-                document.getElementById(id).className = "board-square"
-                document.getElementById(selpiece).className = "board-square"
-                setSelpiece()
+                if (!(key[0] == key[0].toUpperCase() && key1[0] == key1[0].toUpperCase()) && !(key[0] == key[0].toLowerCase() && key1[0] == key1[0].toLowerCase())) {
+                    var temp = piecepos
+                    temp[key1] = ""
+                    temp[key] = id
+                    setpiecepos(temp)
+                    document.getElementById(id).className = "board-square"
+                    document.getElementById(selpiece).className = "board-square"
+                    setSelpiece()
+                }
+                else {
+                    document.getElementById(id).className = "board-square"
+                    document.getElementById(selpiece).className = "board-square"
+                    setSelpiece()
+                }
             }
+            setOriginal()
         }
+    }
+
+    const setOriginal = () => {
+        numarr.map((n) => {
+            alpharr.map((a) => {
+                document.getElementById(a + n).className = "board-square"
+            })
+        })
     }
 
     const positions = numarr.map((n) => {
@@ -50,9 +119,11 @@ const Board = () => {
                             if (selpiece)
                                 document.getElementById(selpiece).className = "board-square"
                             document.getElementById(e.target.id).className = "board-square cls";
+                            showMoves(e.target.id)
                             if (!selpiece)
                                 setSelpiece(a + n)
                             movePiece(e.target.id)
+
                         }} />
                     </div>
                 )
@@ -66,7 +137,7 @@ const Board = () => {
         })
         return (
             <div className="col-12">
-                <div className={n % 2 == 0 ? "board-row-0" : "board-row-1"}>
+                <div className={n % 2 === 0 ? "board-row-0" : "board-row-1"}>
                     {rowpos}
                 </div>
             </div>
@@ -75,7 +146,6 @@ const Board = () => {
 
     return (
         <div className='container' >
-
             <div className="row">
                 {positions}
             </div>

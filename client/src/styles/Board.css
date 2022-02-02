@@ -127,3 +127,7 @@
     z-index:10;
     border:5px solid yellow;
 }
+
+.cls-p{
+    border:5px solid rgb(255, 0, 0);
+}
