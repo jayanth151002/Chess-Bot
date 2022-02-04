@@ -169,6 +169,24 @@ const Board = () => {
 
     const bKing = (id) => {
 
+        setMoves([])
+        var yinit = parseInt(id[1])
+        var alphpos
+        alpharr.map((k, n) => {
+            if (alpharr[n] === id[0])
+                alphpos = n
+        })
+        var tm = []
+        for (var i = -1; i < 2; i++)
+            for (var j = -1; j < 2; j++) {
+                if (board.includes(alpharr[alphpos + i] + numarr[numarr.length - yinit - j])) {
+                    if (!Object.values(piecepos).includes(alpharr[alphpos + i] + numarr[numarr.length - yinit - j]) || isWhite(Object.keys(piecepos).find(k => piecepos[k] === alpharr[alphpos + i] + numarr[numarr.length - yinit - j])[0])) {
+                        document.getElementById(alpharr[alphpos + i] + numarr[numarr.length - yinit - j]).className = "board-square cls-p"
+                        tm.push(alpharr[alphpos + i] + numarr[numarr.length - yinit - j])
+                    }
+                }
+            }
+        setMoves(tm)
     }
 
     const bQueen = (id) => {
