@@ -6,12 +6,24 @@ import Chess from 'chess.js'
 const Board = () => {
     const pos = useRef()
     const [pieces, setPieces] = useState({ "K": "", "k": "", "Q": "", "q": "", "R": "", "r": "", "B": "", "b": "", "N": "", "n": "", "P": "", "p": "" })
-    const [game, setGame] = useState(new Chess())
-    const [fen, setFen] = useState(game.fen())
     const [selpiece, setSelpiece] = useState()
     const [piecepos, setpiecepos] = useState({ K: "e1", Q: "d1", R1: "a1", R2: "h1", B1: "c1", B2: "f1", N1: "b1", N2: "g1", P1: "a2", P2: "b2", P3: "c2", P4: "d2", P5: "e2", P6: "f2", P7: "g2", P8: "h2", k: "e8", q: "d8", r1: "a8", r2: "h8", b1: "c8", b2: "f8", n1: "b8", n2: "g8", p1: "a7", p2: "b7", p3: "c7", p4: "d7", p5: "e7", p6: "f7", p7: "g7", p8: "h7" })
     var numarr = [8, 7, 6, 5, 4, 3, 2, 1]
     var alpharr = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h']
+    const [moves, setMoves] = useState([])
+
+    const isWhite = p => {
+        if (p == p.toUpperCase())
+            return true
+        else
+            return false
+    }
+    const isBlack = p => {
+        if (p == p.toLowerCase())
+            return true
+        else
+            return false
+    }
 
     const isFree = (id) => {
         if (Object.values(piecepos).includes(id))
@@ -26,8 +38,70 @@ const Board = () => {
     const wQueen = () => {
 
     }
-    const wRook = () => {
-
+    const wRook = (id) => {
+        setMoves([])
+        var tm = []
+        var yinit = parseInt(id[1])
+        var alphpos
+        alpharr.map((k, n) => {
+            if (alpharr[n] === id[0])
+                alphpos = n
+        })
+        if (Object.values(piecepos).includes(id)) {
+            for (var i = alphpos + 1; i < alpharr.length; i++) {
+                if (Object.values(piecepos).includes(alpharr[i] + yinit)) {
+                    if (isBlack(Object.keys(piecepos).find(k => piecepos[k] === alpharr[i] + yinit)[0])) {
+                        tm.push(alpharr[i] + yinit)
+                        document.getElementById(alpharr[i] + yinit).className = "board-square cls-p"
+                    }
+                    break;
+                } else {
+                    if(alpharr[i] && yinit)
+                    {tm.push(alpharr[i] + yinit)
+                    document.getElementById(alpharr[i] + yinit).className = "board-square cls-p"}
+                }
+            }
+            for (var i = alphpos - 1; i >= 0; i--) {
+                if (Object.values(piecepos).includes(alpharr[i] + yinit)) {
+                    if (isBlack(Object.keys(piecepos).find(k => piecepos[k] === alpharr[i] + yinit)[0])) {
+                        tm.push(alpharr[i] + yinit)
+                        document.getElementById(alpharr[i] + yinit).className = "board-square cls-p"
+                    }
+                    break;
+                } else {
+                    if(alpharr[i] && yinit)
+                    {tm.push(alpharr[i] + yinit)
+                    document.getElementById(alpharr[i] + yinit).className = "board-square cls-p"}
+                }
+            }
+            for (var i = yinit + 1; i < numarr.length; i++) {
+                if (Object.values(piecepos).includes(alpharr[alphpos] + numarr[numarr.length - i])) {
+                    if (isBlack(Object.keys(piecepos).find(k => piecepos[k] === alpharr[alphpos] + numarr[numarr.length - i])[0])) {
+                        tm.push(alpharr[alphpos] + numarr[numarr.length - i])
+                        document.getElementById(alpharr[alphpos] + numarr[numarr.length - i]).className = "board-square cls-p"
+                    }
+                    break;
+                } else {
+                    if(alpharr[alphpos] && numarr[numarr.length - i])
+                    {tm.push(alpharr[alphpos] + numarr[numarr.length - i])
+                    document.getElementById(alpharr[alphpos] + numarr[numarr.length - i]).className = "board-square cls-p"}
+                }
+            }
+            for (var i = yinit - 1; i >= 0; i--) {
+                if (Object.values(piecepos).includes(alpharr[alphpos] + numarr[numarr.length - i])) {
+                    if (isBlack(Object.keys(piecepos).find(k => piecepos[k] === alpharr[alphpos] + numarr[numarr.length - i])[0])) {
+                        tm.push(alpharr[alphpos] + numarr[numarr.length - i])
+                        document.getElementById(alpharr[alphpos] + numarr[numarr.length - i]).className = "board-square cls-p"
+                    }
+                    break;
+                } else {
+                    if(alpharr[alphpos] && numarr[numarr.length - i])
+                    {tm.push(alpharr[alphpos] + numarr[numarr.length - i])
+                    document.getElementById(alpharr[alphpos] + numarr[numarr.length - i]).className = "board-square cls-p"}
+                }
+            }
+            setMoves(tm)
+        }
     }
     const wBishop = () => {
 
@@ -37,15 +111,37 @@ const Board = () => {
     }
     const wPawn = (id) => {
         var yinit = parseInt(id[1])
-        if (yinit == 2) {
-            if (isFree(id[0] + (yinit + 1))) {
+        var alphpos
+        alpharr.map((k, n) => {
+            if (alpharr[n] === id[0])
+                alphpos = n
+        })
+        if (Object.values(piecepos).includes(id)) {
+            if (yinit == 2) {
+                if (isFree(id[0] + (yinit + 1))) {
+                    document.getElementById(id[0] + (yinit + 1)).className = "board-square cls-p"
+                    setMoves(() => [id[0] + (yinit + 1)])
+                    if (isFree(id[0] + (yinit + 2))) {
+                        document.getElementById(id[0] + (yinit + 2)).className = "board-square cls-p"
+                        setMoves(() => [id[0] + (yinit + 1), id[0] + (yinit + 2)])
+                    }
+                }
+            }
+            else if (yinit > 2 && yinit < 8 && isFree(id[0] + (yinit + 1))) {
                 document.getElementById(id[0] + (yinit + 1)).className = "board-square cls-p"
-                if (isFree(id[0] + (yinit + 2)))
-                    document.getElementById(id[0] + (yinit + 2)).className = "board-square cls-p"
+                setMoves(() => [id[0] + (yinit + 1)])
+            }
+            if (Object.values(piecepos).includes(alpharr[alphpos + 1] + String(parseInt(id[1]) + 1)) && !isWhite(Object.keys(piecepos).find(k => piecepos[k] === alpharr[alphpos + 1] + String(parseInt(id[1]) + 1))[0])) {
+                document.getElementById(alpharr[alphpos + 1] + String(parseInt(id[1]) + 1)).className = "board-square cls-p"
+                // console.log(alpharr[alphpos + 1] + String(parseInt(id[1]) + 1))
+                setMoves(() => [alpharr[alphpos + 1] + String(parseInt(id[1]) + 1)])
+            }
+            if (Object.values(piecepos).includes(alpharr[alphpos - 1] + String(parseInt(id[1]) + 1)) && !isWhite(Object.keys(piecepos).find(k => piecepos[k] === alpharr[alphpos - 1] + String(parseInt(id[1]) + 1))[0])) {
+                document.getElementById(alpharr[alphpos - 1] + String(parseInt(id[1]) + 1)).className = "board-square cls-p"
+                //console.log(alpharr[alphpos - 1] + String(parseInt(id[1]) + 1))
+                setMoves(() => [alpharr[alphpos + 1] + String(parseInt(id[1]) + 1), alpharr[alphpos - 1] + String(parseInt(id[1]) + 1)])
             }
         }
-        else if (yinit > 2 && yinit < 8 && isFree(id[0] + (yinit + 1)))
-            document.getElementById(id[0] + (yinit + 1)).className = "board-square cls-p"
         document.getElementById(id).className = "board-square cls"
     }
 
@@ -74,15 +170,22 @@ const Board = () => {
         if (selpiece) {
             var key = Object.keys(piecepos).find(k => piecepos[k] === selpiece)
             if (!Object.values(piecepos).includes(id)) {
-                var temp = piecepos
-                temp[key] = id
-                setpiecepos(temp)
-                document.getElementById(selpiece).className = "board-square"
-                setSelpiece()
+                if (moves.includes(id)) {
+                    var temp = piecepos
+                    temp[key] = id
+                    setpiecepos(temp)
+                    document.getElementById(selpiece).className = "board-square"
+                    setSelpiece()
+                }
+                else {
+                    document.getElementById(id).className = "board-square"
+                    document.getElementById(selpiece).className = "board-square"
+                    setSelpiece()
+                }
             }
             else {
                 var key1 = Object.keys(piecepos).find(k => piecepos[k] === id)
-                if (!(key[0] == key[0].toUpperCase() && key1[0] == key1[0].toUpperCase()) && !(key[0] == key[0].toLowerCase() && key1[0] == key1[0].toLowerCase())) {
+                if (!(key[0] == key[0].toUpperCase() && key1[0] == key1[0].toUpperCase()) && !(key[0] == key[0].toLowerCase() && key1[0] == key1[0].toLowerCase()) && moves.includes(id)) {
                     var temp = piecepos
                     temp[key1] = ""
                     temp[key] = id
