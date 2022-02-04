@@ -1,7 +1,6 @@
 import '../styles/Board.css'
 import axios from 'axios'
 import { useRef, useState } from 'react'
-import Chess from 'chess.js'
 
 const Board = () => {
     const pos = useRef()
@@ -333,6 +332,74 @@ const Board = () => {
     }
     const bBishop = (id) => {
 
+        var yinit = parseInt(id[1])
+        var alphpos
+        alpharr.map((k, n) => {
+            if (alpharr[n] === id[0])
+                alphpos = n
+        })
+        var tm = []
+        for (var i = yinit + 1, j = alphpos + 1; i <= numarr.length && j < alpharr.length; i++, j++) {
+            if (board.includes(alpharr[j] + i)) {
+                console.log(alpharr[j] + i)
+                if (Object.values(piecepos).includes(alpharr[j] + i)) {
+                    if (isWhite(Object.keys(piecepos).find(k => piecepos[k] === alpharr[j] + i)[0])) {
+                        tm.push(alpharr[j] + i)
+                        document.getElementById(alpharr[j] + i).className = "board-square cls-p"
+                    }
+                    break
+                } else {
+                    tm.push(alpharr[j] + i)
+                    document.getElementById(alpharr[j] + i).className = "board-square cls-p"
+                }
+            }
+        }
+        for (var i = yinit + 1, j = alphpos - 1; i <= numarr.length && j >= 0; i++, j--) {
+            if (board.includes(alpharr[j] + i)) {
+                console.log(alpharr[j] + i)
+                if (Object.values(piecepos).includes(alpharr[j] + i)) {
+                    if (isWhite(Object.keys(piecepos).find(k => piecepos[k] === alpharr[j] + i)[0])) {
+                        tm.push(alpharr[j] + i)
+                        document.getElementById(alpharr[j] + i).className = "board-square cls-p"
+                    }
+                    break
+                } else {
+                    tm.push(alpharr[j] + i)
+                    document.getElementById(alpharr[j] + i).className = "board-square cls-p"
+                }
+            }
+        }
+        for (var i = yinit - 1, j = alphpos + 1; i > 0 && j < alpharr.length; i--, j++) {
+            if (board.includes(alpharr[j] + i)) {
+                console.log(alpharr[j] + i)
+                if (Object.values(piecepos).includes(alpharr[j] + i)) {
+                    if (isWhite(Object.keys(piecepos).find(k => piecepos[k] === alpharr[j] + i)[0])) {
+                        tm.push(alpharr[j] + i)
+                        document.getElementById(alpharr[j] + i).className = "board-square cls-p"
+                    }
+                    break
+                } else {
+                    tm.push(alpharr[j] + i)
+                    document.getElementById(alpharr[j] + i).className = "board-square cls-p"
+                }
+            }
+        }
+        for (var i = yinit - 1, j = alphpos - 1; i > 0 && j >= 0; i--, j--) {
+            if (board.includes(alpharr[j] + i)) {
+                console.log(alpharr[j] + i)
+                if (Object.values(piecepos).includes(alpharr[j] + i)) {
+                    if (isWhite(Object.keys(piecepos).find(k => piecepos[k] === alpharr[j] + i)[0])) {
+                        tm.push(alpharr[j] + i)
+                        document.getElementById(alpharr[j] + i).className = "board-square cls-p"
+                    }
+                    break
+                } else {
+                    tm.push(alpharr[j] + i)
+                    document.getElementById(alpharr[j] + i).className = "board-square cls-p"
+                }
+            }
+        }
+        setMoves(tm)
     }
     const bPawn = (id) => {
         var yinit = parseInt(id[1])
