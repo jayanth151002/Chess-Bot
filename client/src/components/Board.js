@@ -10,6 +10,7 @@ const Board = () => {
     const [piecepos, setpiecepos] = useState({ K: "e1", Q: "d1", R1: "a1", R2: "h1", B1: "c1", B2: "f1", N1: "b1", N2: "g1", P1: "a2", P2: "b2", P3: "c2", P4: "d2", P5: "e2", P6: "f2", P7: "g2", P8: "h2", k: "e8", q: "d8", r1: "a8", r2: "h8", b1: "c8", b2: "f8", n1: "b8", n2: "g8", p1: "a7", p2: "b7", p3: "c7", p4: "d7", p5: "e7", p6: "f7", p7: "g7", p8: "h7" })
     var numarr = [8, 7, 6, 5, 4, 3, 2, 1]
     var alpharr = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h']
+    const board = alpharr.map((al) => numarr.map((n) => al + n)).flat()
     const [moves, setMoves] = useState([])
 
     const isWhite = p => {
@@ -32,8 +33,25 @@ const Board = () => {
             return true
     }
 
-    const wKing = () => {
-
+    const wKing = (id) => {
+        setMoves([])
+        var yinit = parseInt(id[1])
+        var alphpos
+        alpharr.map((k, n) => {
+            if (alpharr[n] === id[0])
+                alphpos = n
+        })
+        var tm = []
+        for (var i = -1; i < 2; i++)
+            for (var j = -1; j < 2; j++) {
+                if (board.includes(alpharr[alphpos + i] + numarr[numarr.length - yinit - j])) {
+                    if (!Object.values(piecepos).includes(alpharr[alphpos + i] + numarr[numarr.length - yinit - j]) || isBlack(Object.keys(piecepos).find(k => piecepos[k] === alpharr[alphpos + i] + numarr[numarr.length - yinit - j])[0])) {
+                        document.getElementById(alpharr[alphpos + i] + numarr[numarr.length - yinit - j]).className = "board-square cls-p"
+                        tm.push(alpharr[alphpos + i] + numarr[numarr.length - yinit - j])
+                    }
+                }
+            }
+        setMoves(tm)
     }
     const wQueen = () => {
 
