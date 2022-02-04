@@ -56,9 +56,10 @@ const Board = () => {
                     }
                     break;
                 } else {
-                    if(alpharr[i] && yinit)
-                    {tm.push(alpharr[i] + yinit)
-                    document.getElementById(alpharr[i] + yinit).className = "board-square cls-p"}
+                    if (alpharr[i] && yinit) {
+                        tm.push(alpharr[i] + yinit)
+                        document.getElementById(alpharr[i] + yinit).className = "board-square cls-p"
+                    }
                 }
             }
             for (var i = alphpos - 1; i >= 0; i--) {
@@ -69,9 +70,10 @@ const Board = () => {
                     }
                     break;
                 } else {
-                    if(alpharr[i] && yinit)
-                    {tm.push(alpharr[i] + yinit)
-                    document.getElementById(alpharr[i] + yinit).className = "board-square cls-p"}
+                    if (alpharr[i] && yinit) {
+                        tm.push(alpharr[i] + yinit)
+                        document.getElementById(alpharr[i] + yinit).className = "board-square cls-p"
+                    }
                 }
             }
             for (var i = yinit + 1; i < numarr.length; i++) {
@@ -82,9 +84,10 @@ const Board = () => {
                     }
                     break;
                 } else {
-                    if(alpharr[alphpos] && numarr[numarr.length - i])
-                    {tm.push(alpharr[alphpos] + numarr[numarr.length - i])
-                    document.getElementById(alpharr[alphpos] + numarr[numarr.length - i]).className = "board-square cls-p"}
+                    if (alpharr[alphpos] && numarr[numarr.length - i]) {
+                        tm.push(alpharr[alphpos] + numarr[numarr.length - i])
+                        document.getElementById(alpharr[alphpos] + numarr[numarr.length - i]).className = "board-square cls-p"
+                    }
                 }
             }
             for (var i = yinit - 1; i >= 0; i--) {
@@ -95,9 +98,10 @@ const Board = () => {
                     }
                     break;
                 } else {
-                    if(alpharr[alphpos] && numarr[numarr.length - i])
-                    {tm.push(alpharr[alphpos] + numarr[numarr.length - i])
-                    document.getElementById(alpharr[alphpos] + numarr[numarr.length - i]).className = "board-square cls-p"}
+                    if (alpharr[alphpos] && numarr[numarr.length - i]) {
+                        tm.push(alpharr[alphpos] + numarr[numarr.length - i])
+                        document.getElementById(alpharr[alphpos] + numarr[numarr.length - i]).className = "board-square cls-p"
+                    }
                 }
             }
             setMoves(tm)
@@ -145,24 +149,79 @@ const Board = () => {
         document.getElementById(id).className = "board-square cls"
     }
 
+    const bKing = (id) => {
+
+    }
+
+    const bQueen = (id) => {
+
+    }
+    const bRook = (id) => {
+
+    }
+    const bKnight = (id) => {
+
+    }
+    const bBishop = (id) => {
+
+    }
+    const bPawn = (id) => {
+        var yinit = parseInt(id[1])
+        var alphpos
+        alpharr.map((k, n) => {
+            if (alpharr[n] === id[0])
+                alphpos = n
+        })
+        if (Object.values(piecepos).includes(id)) {
+            if (yinit == 7) {
+                if (isFree(id[0] + (yinit - 1))) {
+                    document.getElementById(id[0] + (yinit - 1)).className = "board-square cls-p"
+                    setMoves(() => [id[0] + (yinit - 1)])
+                    if (isFree(id[0] + (yinit - 2))) {
+                        document.getElementById(id[0] + (yinit - 2)).className = "board-square cls-p"
+                        setMoves(() => [id[0] + (yinit - 1), id[0] + (yinit - 2)])
+                    }
+                }
+            }
+            else if (yinit < 7 && yinit > 0 && isFree(id[0] + (yinit - 1))) {
+                document.getElementById(id[0] + (yinit - 1)).className = "board-square cls-p"
+                setMoves(() => [id[0] + (yinit - 1)])
+            }
+            if (Object.values(piecepos).includes(alpharr[alphpos + 1] + String(parseInt(id[1]) - 1)) && !isBlack(Object.keys(piecepos).find(k => piecepos[k] === alpharr[alphpos + 1] + String(parseInt(id[1]) - 1))[0])) {
+                document.getElementById(alpharr[alphpos + 1] + String(parseInt(id[1]) - 1)).className = "board-square cls-p"
+                // console.log(alpharr[alphpos + 1] + String(parseInt(id[1]) + 1))
+                setMoves(() => [alpharr[alphpos + 1] + String(parseInt(id[1]) - 1)])
+            }
+            if (Object.values(piecepos).includes(alpharr[alphpos - 1] + String(parseInt(id[1]) - 1)) && !isBlack(Object.keys(piecepos).find(k => piecepos[k] === alpharr[alphpos - 1] + String(parseInt(id[1]) - 1))[0])) {
+                document.getElementById(alpharr[alphpos - 1] + String(parseInt(id[1]) - 1)).className = "board-square cls-p"
+                //console.log(alpharr[alphpos - 1] + String(parseInt(id[1]) + 1))
+                setMoves(() => [alpharr[alphpos + 1] + String(parseInt(id[1]) - 1), alpharr[alphpos - 1] + String(parseInt(id[1]) - 1)])
+            }
+        }
+        document.getElementById(id).className = "board-square cls"
+    }
+
+
+
     axios.get('/pieces')
         .then(res => setPieces(res.data))
         .catch(res => console.log(res))
 
     const showMoves = (id) => {
         var key = Object.keys(piecepos).find(k => piecepos[k] === id)
-        if (key[0] == key[0].toUpperCase()) {
-            switch (key[0]) {
-                case 'K': wKing(id); break;
-                case 'Q': wQueen(id); break;
-                case 'R': wRook(id); break;
-                case 'B': wBishop(id); break;
-                case 'N': wKnight(id); break;
-                case 'P': wPawn(id); break;
-            }
-        }
-        else {
-            ;
+        switch (key[0]) {
+            case 'K': wKing(id); break;
+            case 'Q': wQueen(id); break;
+            case 'R': wRook(id); break;
+            case 'B': wBishop(id); break;
+            case 'N': wKnight(id); break;
+            case 'P': wPawn(id); break;
+            case 'k': bKing(id); break;
+            case 'q': bQueen(id); break;
+            case 'r': bRook(id); break;
+            case 'b': bBishop(id); break;
+            case 'n': bKnight(id); break;
+            case 'p': bPawn(id); break;
         }
     }
 
