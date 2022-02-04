@@ -76,7 +76,7 @@ const Board = () => {
                     }
                 }
             }
-            for (var i = yinit + 1; i < numarr.length; i++) {
+            for (var i = yinit + 1; i <= numarr.length; i++) {
                 if (Object.values(piecepos).includes(alpharr[alphpos] + numarr[numarr.length - i])) {
                     if (isBlack(Object.keys(piecepos).find(k => piecepos[k] === alpharr[alphpos] + numarr[numarr.length - i])[0])) {
                         tm.push(alpharr[alphpos] + numarr[numarr.length - i])
@@ -157,7 +157,73 @@ const Board = () => {
 
     }
     const bRook = (id) => {
-
+        setMoves([])
+        var tm = []
+        var yinit = parseInt(id[1])
+        var alphpos
+        alpharr.map((k, n) => {
+            if (alpharr[n] === id[0])
+                alphpos = n
+        })
+        if (Object.values(piecepos).includes(id)) {
+            for (var i = alphpos + 1; i < alpharr.length; i++) {
+                if (Object.values(piecepos).includes(alpharr[i] + yinit)) {
+                    if (isWhite(Object.keys(piecepos).find(k => piecepos[k] === alpharr[i] + yinit)[0])) {
+                        tm.push(alpharr[i] + yinit)
+                        document.getElementById(alpharr[i] + yinit).className = "board-square cls-p"
+                    }
+                    break;
+                } else {
+                    if (alpharr[i] && yinit) {
+                        tm.push(alpharr[i] + yinit)
+                        document.getElementById(alpharr[i] + yinit).className = "board-square cls-p"
+                    }
+                }
+            }
+            for (var i = alphpos - 1; i >= 0; i--) {
+                if (Object.values(piecepos).includes(alpharr[i] + yinit)) {
+                    if (isWhite(Object.keys(piecepos).find(k => piecepos[k] === alpharr[i] + yinit)[0])) {
+                        tm.push(alpharr[i] + yinit)
+                        document.getElementById(alpharr[i] + yinit).className = "board-square cls-p"
+                    }
+                    break;
+                } else {
+                    if (alpharr[i] && yinit) {
+                        tm.push(alpharr[i] + yinit)
+                        document.getElementById(alpharr[i] + yinit).className = "board-square cls-p"
+                    }
+                }
+            }
+            for (var i = yinit + 1; i <= numarr.length; i++) {
+                if (Object.values(piecepos).includes(alpharr[alphpos] + numarr[numarr.length - i])) {
+                    if (isWhite(Object.keys(piecepos).find(k => piecepos[k] === alpharr[alphpos] + numarr[numarr.length - i])[0])) {
+                        tm.push(alpharr[alphpos] + numarr[numarr.length - i])
+                        document.getElementById(alpharr[alphpos] + numarr[numarr.length - i]).className = "board-square cls-p"
+                    }
+                    break;
+                } else {
+                    if (alpharr[alphpos] && numarr[numarr.length - i]) {
+                        tm.push(alpharr[alphpos] + numarr[numarr.length - i])
+                        document.getElementById(alpharr[alphpos] + numarr[numarr.length - i]).className = "board-square cls-p"
+                    }
+                }
+            }
+            for (var i = yinit - 1; i >= 0; i--) {
+                if (Object.values(piecepos).includes(alpharr[alphpos] + numarr[numarr.length - i])) {
+                    if (isWhite(Object.keys(piecepos).find(k => piecepos[k] === alpharr[alphpos] + numarr[numarr.length - i])[0])) {
+                        tm.push(alpharr[alphpos] + numarr[numarr.length - i])
+                        document.getElementById(alpharr[alphpos] + numarr[numarr.length - i]).className = "board-square cls-p"
+                    }
+                    break;
+                } else {
+                    if (alpharr[alphpos] && numarr[numarr.length - i]) {
+                        tm.push(alpharr[alphpos] + numarr[numarr.length - i])
+                        document.getElementById(alpharr[alphpos] + numarr[numarr.length - i]).className = "board-square cls-p"
+                    }
+                }
+            }
+            setMoves(tm)
+        }
     }
     const bKnight = (id) => {
 
