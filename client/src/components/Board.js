@@ -11,6 +11,7 @@ const Board = () => {
     var alpharr = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h']
     const board = alpharr.map((al) => numarr.map((n) => al + n)).flat()
     const [moves, setMoves] = useState([])
+    const [turn, setTurn] = useState("white")
 
     const isWhite = p => {
         if (p == p.toUpperCase())
@@ -849,6 +850,10 @@ const Board = () => {
                 }
             }
             setOriginal()
+            if (turn === 'white')
+                setTurn('black')
+            else
+                setTurn('white')
         }
     }
 
@@ -867,13 +872,15 @@ const Board = () => {
                 return (
                     <div className="board-square" id={a + n} ref={pos} >
                         <img src={pieces[key[0]]} alt="" width="100%" id={a + n} onClick={(e) => {
-                            if (selpiece)
-                                document.getElementById(selpiece).className = "board-square"
-                            document.getElementById(e.target.id).className = "board-square cls";
-                            showMoves(e.target.id)
-                            if (!selpiece)
-                                setSelpiece(a + n)
-                            movePiece(e.target.id)
+                            if ((turn === 'white' && isWhite(Object.keys(piecepos).find(k => piecepos[k] === e.target.id)[0])) || (turn === 'black' && isBlack(Object.keys(piecepos).find(k => piecepos[k] === e.target.id)[0]))) {
+                                if (selpiece)
+                                    document.getElementById(selpiece).className = "board-square"
+                                document.getElementById(e.target.id).className = "board-square cls";
+                                showMoves(e.target.id)
+                                if (!selpiece)
+                                    setSelpiece(a + n)
+                                movePiece(e.target.id)
+                            }
 
                         }} />
                     </div>
