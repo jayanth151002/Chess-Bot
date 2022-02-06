@@ -313,9 +313,67 @@ const Board = () => {
         }
         setMoves(tm)
     }
-    const wKnight = () => {
-
+    const wKnight = (id) => {
+        setMoves([])
+        var tm = []
+        var yinit = parseInt(id[1])
+        var alphpos
+        alpharr.map((k, n) => {
+            if (alpharr[n] === id[0])
+                alphpos = n
+        })
+        if (board.includes(alpharr[alphpos + 1] + (yinit + 2))) {
+            if (!Object.values(piecepos).includes(alpharr[alphpos + 1] + (yinit + 2)) || isBlack(Object.keys(piecepos).find(k => piecepos[k] === alpharr[alphpos + 1] + (yinit + 2))[0])) {
+                tm.push(alpharr[alphpos + 1] + (yinit + 2))
+                document.getElementById(alpharr[alphpos + 1] + (yinit + 2)).className = "board-square cls-p"
+            }
+        }
+        if (board.includes(alpharr[alphpos - 1] + (yinit + 2))) {
+            if (!Object.values(piecepos).includes(alpharr[alphpos - 1] + (yinit + 2)) || isBlack(Object.keys(piecepos).find(k => piecepos[k] === alpharr[alphpos - 1] + (yinit + 2))[0])) {
+                tm.push(alpharr[alphpos - 1] + (yinit + 2))
+                document.getElementById(alpharr[alphpos - 1] + (yinit + 2)).className = "board-square cls-p"
+            }
+        }
+        if (board.includes(alpharr[alphpos + 1] + (yinit - 2))) {
+            if (!Object.values(piecepos).includes(alpharr[alphpos + 1] + (yinit - 2)) || isBlack(Object.keys(piecepos).find(k => piecepos[k] === alpharr[alphpos + 1] + (yinit - 2))[0])) {
+                tm.push(alpharr[alphpos + 1] + (yinit - 2))
+                document.getElementById(alpharr[alphpos + 1] + (yinit - 2)).className = "board-square cls-p"
+            }
+        }
+        if (board.includes(alpharr[alphpos - 1] + (yinit - 2))) {
+            if (!Object.values(piecepos).includes(alpharr[alphpos - 1] + (yinit - 2)) || isBlack(Object.keys(piecepos).find(k => piecepos[k] === alpharr[alphpos - 1] + (yinit - 2))[0])) {
+                tm.push(alpharr[alphpos - 1] + (yinit - 2))
+                document.getElementById(alpharr[alphpos - 1] + (yinit - 2)).className = "board-square cls-p"
+            }
+        }
+        if (board.includes(alpharr[alphpos + 2] + (yinit + 1))) {
+            if (!Object.values(piecepos).includes(alpharr[alphpos + 2] + (yinit + 1)) || isBlack(Object.keys(piecepos).find(k => piecepos[k] === alpharr[alphpos + 2] + (yinit + 1))[0])) {
+                tm.push(alpharr[alphpos + 2] + (yinit + 1))
+                document.getElementById(alpharr[alphpos + 2] + (yinit + 1)).className = "board-square cls-p"
+            }
+        }
+        if (board.includes(alpharr[alphpos + 2] + (yinit - 1))) {
+            if (!Object.values(piecepos).includes(alpharr[alphpos + 2] + (yinit - 1)) || isBlack(Object.keys(piecepos).find(k => piecepos[k] === alpharr[alphpos + 2] + (yinit - 1))[0])) {
+                tm.push(alpharr[alphpos + 2] + (yinit - 1))
+                document.getElementById(alpharr[alphpos + 2] + (yinit - 1)).className = "board-square cls-p"
+            }
+        }
+        if (board.includes(alpharr[alphpos - 2] + (yinit + 1))) {
+            if (!Object.values(piecepos).includes(alpharr[alphpos - 2] + (yinit + 1)) || isBlack(Object.keys(piecepos).find(k => piecepos[k] === alpharr[alphpos - 2] + (yinit + 1))[0])) {
+                tm.push(alpharr[alphpos - 2] + (yinit + 1))
+                document.getElementById(alpharr[alphpos - 2] + (yinit + 1)).className = "board-square cls-p"
+            }
+        }
+        if (board.includes(alpharr[alphpos - 2] + (yinit - 1))) {
+            if (!Object.values(piecepos).includes(alpharr[alphpos - 2] + (yinit - 1)) || isBlack(Object.keys(piecepos).find(k => piecepos[k] === alpharr[alphpos - 2] + (yinit - 1))[0])) {
+                tm.push(alpharr[alphpos - 2] + (yinit - 1))
+                document.getElementById(alpharr[alphpos - 2] + (yinit - 1)).className = "board-square cls-p"
+            }
+        }
+        setMoves(tm)
     }
+
+
     const wPawn = (id) => {
         var yinit = parseInt(id[1])
         var alphpos
