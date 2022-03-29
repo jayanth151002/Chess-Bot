@@ -1,6 +1,6 @@
 import '../styles/Board.css'
 import axios from 'axios'
-import { useRef, useState } from 'react'
+import { useRef, useState, useEffect } from 'react'
 
 const Board = () => {
     const pos = useRef()
@@ -11,6 +11,7 @@ const Board = () => {
     var alpharr = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h']
     const board = alpharr.map((al) => numarr.map((n) => al + n)).flat()
     const [moves, setMoves] = useState([])
+    const [check, setCheck] = useState("")
 
     const isWhite = p => {
         if (p == p.toUpperCase())
@@ -372,7 +373,6 @@ const Board = () => {
         }
         setMoves(tm)
     }
-
 
     const wPawn = (id) => {
         var yinit = parseInt(id[1])
@@ -790,11 +790,17 @@ const Board = () => {
         document.getElementById(id).className = "board-square cls"
     }
 
+    useEffect(() => {
+        axios.get('/pieces')
+            .then(res => setPieces(res.data))
+            .catch(res => console.log(res))
+    }, [])
 
-
-    axios.get('/pieces')
-        .then(res => setPieces(res.data))
-        .catch(res => console.log(res))
+    const checkKing = () => {
+        if (moves.includes(piecepos.K)) {
+            console.log(piecepos.K)
+        }
+    }
 
     const showMoves = (id) => {
         var key = Object.keys(piecepos).find(k => piecepos[k] === id)
@@ -874,7 +880,6 @@ const Board = () => {
                             if (!selpiece)
                                 setSelpiece(a + n)
                             movePiece(e.target.id)
-
                         }} />
                     </div>
                 )
@@ -899,6 +904,9 @@ const Board = () => {
         <div className='container' >
             <div className="row">
                 {positions}
+            </div>
+            <div>
+                check:{check}
             </div>
         </div >
     )
