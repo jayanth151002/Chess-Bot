@@ -855,6 +855,10 @@ const Board = () => {
                 }
             }
             setOriginal()
+            if (turn === 'white')
+                setTurn('black')
+            else
+                setTurn('white')
         }
     }
 
