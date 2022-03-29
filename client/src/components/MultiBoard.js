@@ -796,12 +796,7 @@ const MultiBoard = () => {
             .catch(res => console.log(res))
     }, [])
 
-    const checkKing = () => {
-        if (moves.includes(piecepos.K)) {
-            console.log(piecepos.K)
-        }
-    }
-
+    
     const showMoves = (id) => {
         var key = Object.keys(piecepos).find(k => piecepos[k] === id)
         switch (key[0]) {
