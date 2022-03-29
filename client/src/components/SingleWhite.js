@@ -1,6 +1,6 @@
 import '../styles/Board.css'
 import axios from 'axios'
-import { useRef, useState, useEffect } from 'react'
+import { useRef, useState, useEffect, useCallback } from 'react'
 
 const SingleWhite = () => {
     const pos = useRef()
@@ -12,6 +12,9 @@ const SingleWhite = () => {
     const board = alpharr.map((al) => numarr.map((n) => al + n)).flat()
     const [moves, setMoves] = useState([])
     const [check, setCheck] = useState("")
+
+    const [, updateState] = useState();
+    const forceUpdate = useCallback(() => updateState({}), []);
 
     const isWhite = p => {
         if (p == p.toUpperCase())
@@ -426,16 +429,27 @@ const SingleWhite = () => {
             case 'B': wBishop(id); break;
             case 'N': wKnight(id); break;
             case 'P': wPawn(id); break;
-            // case 'k': bKing(id); break;
-            // case 'q': bQueen(id); break;
-            // case 'r': bRook(id); break;
-            // case 'b': bBishop(id); break;
-            // case 'n': bKnight(id); break;
-            // case 'p': bPawn(id); break;
         }
     }
 
-    const movePiece = (id) => {
+    const moveBlack = (piece, target) => {
+        var key = Object.keys(piecepos).find(k => piecepos[k] === piece)
+        console.log(key)
+        if (!Object.values(piecepos).includes(target)) {
+            var temp = piecepos
+            temp[key] = target
+            setpiecepos(temp)
+        }
+        else {
+            var key1 = Object.keys(piecepos).find(k => piecepos[k] === target)
+            var temp = piecepos
+            temp[key1] = ""
+            temp[key] = target
+            setpiecepos(temp)
+        }
+    }
+
+    const moveWhite = (id) => {
         if (selpiece) {
             var key = Object.keys(piecepos).find(k => piecepos[k] === selpiece)
             if (!Object.values(piecepos).includes(id)) {
@@ -444,6 +458,14 @@ const SingleWhite = () => {
                     temp[key] = id
                     setpiecepos(temp)
                     document.getElementById(selpiece).className = "board-square"
+                    const pos = new FormData
+                    pos.append('pos', selpiece + id)
+                    axios.post('http://127.0.0.1:5000/white', pos)
+                        .then(res => {
+                            moveBlack(res.data.slice(0, 2), res.data.slice(2, 4))
+                            forceUpdate()
+                        })
+                        .catch(err => console.log(err))
                     setSelpiece()
                 }
                 else {
@@ -454,6 +476,7 @@ const SingleWhite = () => {
             }
             else {
                 var key1 = Object.keys(piecepos).find(k => piecepos[k] === id)
+                console.log(key1)
                 if (!(key[0] == key[0].toUpperCase() && key1[0] == key1[0].toUpperCase()) && !(key[0] == key[0].toLowerCase() && key1[0] == key1[0].toLowerCase()) && moves.includes(id)) {
                     var temp = piecepos
                     temp[key1] = ""
@@ -461,6 +484,14 @@ const SingleWhite = () => {
                     setpiecepos(temp)
                     document.getElementById(id).className = "board-square"
                     document.getElementById(selpiece).className = "board-square"
+                    const pos = new FormData
+                    pos.append('pos', selpiece + id)
+                    axios.post('http://127.0.0.1:5000/white', pos)
+                        .then(res => {
+                            moveBlack(res.data.slice(0, 2), res.data.slice(2, 4))
+                            forceUpdate()
+                        })
+                        .catch(err => console.log(err))
                     setSelpiece()
                 }
                 else {
@@ -493,16 +524,20 @@ const SingleWhite = () => {
                                     document.getElementById(selpiece).className = "board-square"
                                 document.getElementById(e.target.id).className = "board-square cls";
                                 showMoves(e.target.id)
-                                if (!selpiece)
+                                if (!selpiece) {
                                     setSelpiece(a + n)
-                                movePiece(e.target.id)
+                                }
+                                moveWhite(e.target.id)
+                            }
+                            else if (moves.includes(e.target.id)) {
+                                moveWhite(e.target.id)
                             }
                         }} />
                     </div>
                 )
             } else return (
                 <div className="board-square" id={a + n} onClick={(e) => {
-                    movePiece(e.target.id)
+                    moveWhite(e.target.id)
                 }}>
 
                 </div>
