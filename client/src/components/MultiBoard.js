@@ -2,7 +2,7 @@ import '../styles/Board.css'
 import axios from 'axios'
 import { useRef, useState, useEffect } from 'react'
 
-const Board = () => {
+const MultiBoard = () => {
     const pos = useRef()
     const [pieces, setPieces] = useState({ "K": "", "k": "", "Q": "", "q": "", "R": "", "r": "", "B": "", "b": "", "N": "", "n": "", "P": "", "p": "" })
     const [selpiece, setSelpiece] = useState()
@@ -855,10 +855,6 @@ const Board = () => {
                 }
             }
             setOriginal()
-            if (turn === 'white')
-                setTurn('black')
-            else
-                setTurn('white')
         }
     }
 
@@ -916,4 +912,4 @@ const Board = () => {
     )
 }
 
-export default Board
+export default MultiBoard

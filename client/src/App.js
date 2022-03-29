@@ -1,6 +1,9 @@
 import './App.css';
 import React, { useEffect, useState } from 'react'
-import Board from './components/Board';
+import Home from './components/Home';
+import MultiBoard from './components/MultiBoard';
+import SingleBoard from './components/Singleboard';
+import { Routes, Route, Redirect } from 'react-router-dom'
 import axios from 'axios'
 const App = () => {
   const [dat, setDat] = useState()
@@ -13,11 +16,11 @@ const App = () => {
 
   return (
     <div className="App">
-      <p>
-        Chess Bot<br />
-        {dat}
-        <Board />
-      </p>
+      <Routes>
+        <Route path='/' element={<Home />} />
+        <Route path='/multiplayer' element={<MultiBoard />} />
+        <Route path='/singleplayer' element={<SingleBoard />} />
+      </Routes>
     </div>
   );
 }
